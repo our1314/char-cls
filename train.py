@@ -21,7 +21,7 @@ total_train_step = 0
 # 记录测试的次数
 total_val_step = 0
 # 训练轮数
-epoch = 300
+epoch_count = 300
 net = classify_net1()
 net.to(device)
 loss_fn = nn.CrossEntropyLoss()
@@ -29,21 +29,20 @@ optimizer = torch.optim.SGD(net.parameters(), lr=0.01)
 
 writer = SummaryWriter("../logs015_train")
 
-print(f"训练集的数量:{len(data_char.dataloader_train)}")
-print(f"训练集的数量:{len(data_char.dataloader_val)}")
+print(f"训练集的数量:{len(data_char.datasets_train)}")
+print(f"训练集的数量:{len(data_char.datasets_val)}")
 
-for i in range(epoch):
-    print(f"----第{i + 1}轮训练开始----")
+for epoch in range(epoch_count):
+    print(f"----第{epoch + 1}轮训练开始----")
 
     # 训练
     net.train()
-    for imgs, targets in data_char.dataloader_train:
+    for imgs, labels in data_char.dataloader_train:
         imgs = imgs.to(device)
-        targets = targets.to(device)
+        labels = labels.to(device)
 
-        outputs = net(imgs)
-
-        loss = loss_fn(outputs, targets)
+        out = net(imgs)
+        loss = loss_fn(out, labels)
         # 优化
         optimizer.zero_grad()
         loss.backward()
@@ -52,9 +51,9 @@ for i in range(epoch):
     # 验证
     net.eval()
     total_val_loss = 0
-    total_accuracy = 0
+    total_val_accuracy = 0
     with torch.no_grad():
-        for imgs, targets in data_char.dataloader_val:
+        for imgs, labels in data_char.dataloader_val:
             imgs = imgs.to(device)
 
             #region 显示训练图像
@@ -66,21 +65,21 @@ for i in range(epoch):
             # img2.show()
             #endregion
 
-            targets = targets.to(device)
-            outputs = net(imgs)
+            labels = labels.to(device)
+            out = net(imgs)
 
-            loss = loss_fn(outputs, targets)
+            loss = loss_fn(out, labels)
             total_val_loss += loss
 
-            accuracy = (outputs.argmax(1) == targets).sum()
-            total_accuracy += accuracy
+            acc = (out.argmax(1) == labels).sum()
+            total_val_accuracy += acc
 
-        total_val_step += 1
         print(f"整体测试集上的Loss:{total_val_loss}")
         writer.add_scalar("test_loss", total_val_loss, total_val_step)
-        print(total_accuracy, len(data_char.datasets_val))
-        print(f"整体测试集上的Accuracy:{total_accuracy / len(data_char.datasets_val)}")  # 计算精度需要除验证数据集的长度，而不是其dataloader(数量不对)
-        writer.add_scalar("test_accuracy", total_accuracy / len(data_char.datasets_val), total_val_step)
 
-        torch.save(net, f"epoch_{i + 1}.pth")
-        print("第{}轮模型参数已保存".format(i + 1))
+        print(total_val_accuracy, len(data_char.datasets_val))
+        print(f"整体测试集上的Accuracy:{total_val_accuracy / len(data_char.datasets_val)}")
+        writer.add_scalar("test_accuracy", total_val_accuracy / len(data_char.datasets_val), epoch+1)# 计算精度需要除验证数据集的长度，而不是其dataloader(数量不对)
+
+        torch.save(net, f"epoch_{epoch + 1}.pth")
+        print(f"第{epoch + 1}轮模型参数已保存")
