@@ -59,13 +59,14 @@ for i in range(epoch):
             i += 1
             imgs = imgs.to(device)
 
+            #region 显示训练图像
             # img1 = imgs[0, :, :, :]
             # img2 = imgs[1, :, :, :]
-            #
             # img1 = torchvision.transforms.ToPILImage()(img1)
             # img1.show()
             # img2 = torchvision.transforms.ToPILImage()(img2)
             # img2.show()
+            #endregion
 
             targets = targets.to(device)
             outputs = net(imgs)
