@@ -101,8 +101,8 @@ def Train(net, loss_fn, optim, dataset_train, dataset_test):
 
 if __name__ == '__main__':
 
-    aa = torch.argmax(torch.tensor([1, 3, 5, 2]), keepdim=True)
-    pass
+    # aa = torch.argmax(torch.tensor([1, 3, 5, 2]), keepdim=True)
+    # pass
     trans = torchvision.transforms.Compose([
         torchvision.transforms.RandomHorizontalFlip(),
         torchvision.transforms.RandomVerticalFlip(),
