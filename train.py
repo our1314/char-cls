@@ -53,10 +53,8 @@ for i in range(epoch):
     net.eval()
     total_val_loss = 0
     total_accuracy = 0
-    i = 0
     with torch.no_grad():
         for imgs, targets in data_char.dataloader_val:
-            i += 1
             imgs = imgs.to(device)
 
             #region 显示训练图像
@@ -81,8 +79,8 @@ for i in range(epoch):
         print(f"整体测试集上的Loss:{total_val_loss}")
         writer.add_scalar("test_loss", total_val_loss, total_val_step)
         print(total_accuracy, len(data_char.datasets_val))
-        print(f"整体测试集上的Accuracy:{total_accuracy / len(data_char.datasets_val)}")  # 计算精度需要除验证数据集的长度，而不是dataloader(数量不对)
+        print(f"整体测试集上的Accuracy:{total_accuracy / len(data_char.datasets_val)}")  # 计算精度需要除验证数据集的长度，而不是其dataloader(数量不对)
         writer.add_scalar("test_accuracy", total_accuracy / len(data_char.datasets_val), total_val_step)
 
-        torch.save(net, f"runs/train/epoch_{i + 1}.pth")
+        torch.save(net, f"epoch_{i + 1}.pth")
         print("第{}轮模型参数已保存".format(i + 1))
