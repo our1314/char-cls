@@ -51,5 +51,3 @@ if __name__ == '__main__':
 
     loss_func = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(net.parameters(), lr=1e-3, weight_decay=1e-3, momentum=0.9)
-
-    train(net, trainloader=)
