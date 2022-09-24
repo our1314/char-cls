@@ -3,6 +3,9 @@
 提供dataloader
 数据增强
 将数据加载到GPU
+
+dataset 为数据集
+dataloader 为数据集加载器
 """
 import torch
 import torchvision
