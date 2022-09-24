@@ -32,9 +32,10 @@ writer = SummaryWriter("../logs015_train")
 print(f"训练集的数量:{len(data_char.dataloader_train)}")
 print(f"训练集的数量:{len(data_char.dataloader_val)}")
 
-# 训练
 for i in range(epoch):
     print(f"----第{i + 1}轮训练开始----")
+
+    # 训练
     net.train()
     for imgs, targets in data_char.dataloader_train:
         imgs = imgs.to(device)
