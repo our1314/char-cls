@@ -37,13 +37,18 @@ def train(opt):
 
     start_epoch = 0
     if opt.resume:
-        lists = os.listdir(model_path)#获取模型路径下的模型文件
-        lists.sort(key=lambda fn: os.path.getmtime(model_path + "\\" + fn))  # 按时间排序
-        last_pt_path = os.path.join(model_path, lists[len(lists) - 1])
-        checkpoint = torch.load(last_pt_path)
-        start_epoch = checkpoint['epoch']
-        net.load_state_dict(checkpoint['net'])
-        opt.load_state_dict(checkpoint['optimizer'])
+        '''
+            断点继续参考：
+            https://www.zhihu.com/question/482169025/answer/2081124014
+            '''
+        lists = os.listdir(opt.model_save_path)#获取模型路径下的模型文件
+        if len(lists) > 0:
+            lists.sort(key=lambda fn: os.path.getmtime(opt.model_save_path + "\\" + fn))  # 按时间排序
+            last_pt_path = os.path.join(model_path, lists[len(lists) - 1])
+            checkpoint = torch.load(last_pt_path)
+            start_epoch = checkpoint['epoch']
+            net.load_state_dict(checkpoint['net'])
+            opt.load_state_dict(checkpoint['optimizer'])
 
     print(f"训练集的数量:{len(data_char.datasets_train)}")
     print(f"训练集的数量:{len(data_char.datasets_val)}")
@@ -60,10 +65,10 @@ def train(opt):
             labels = labels.to(device)
 
             # #region 显示训练图像
-            # img1 = imgs[0, :, :, :]
+            img1 = imgs[0, :, :, :]
             # img2 = imgs[1, :, :, :]
-            # img1 = torchvision.transforms.ToPILImage()(img1)
-            # img1.show()
+            img1 = torchvision.transforms.ToPILImage()(img1)
+            img1.show()
             # img2 = torchvision.transforms.ToPILImage()(img2)
             # img2.show()
             # #endregion
@@ -122,7 +127,7 @@ def train(opt):
                       'optimizer': optimizer.state_dict(),
                       'epoch': epoch}
 
-        p = f'{model_path}/{time.strftime("%Y.%m.%d_%H.%M.%S")}-epoch={epoch}-loss={str(round(train_loss.item(), 5))}-acc={str(round(train_acc.item(), 5))}.pth'
+        p = f'{opt.model_save_path}/{time.strftime("%Y.%m.%d_%H.%M.%S")}-epoch={epoch}-loss={str(round(train_loss.item(), 5))}-acc={str(round(train_acc.item(), 5))}.pth'
         torch.save(state_dict, p)
         # print(f"第{epoch+1}轮模型参数已保存")
 
@@ -130,6 +135,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--resume', nargs='?', const=True, default=False, help='resume most recent training')
     parser.add_argument('--save_period', type=int, default=-1, help='Log model after every "save_period" epoch')
+    parser.add_argument('--model_save_path', default='run/train', help='save to project/name')
 
     opt = parser.parse_args()
     train(opt)
