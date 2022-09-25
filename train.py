@@ -80,17 +80,17 @@ for epoch in range(epoch_count):
             acc = (out.argmax(1) == labels).sum()
             total_val_accuracy += acc
 
-        train_acc = total_train_accuracy / len(data_char.datasets_train)
-        train_loss = total_train_loss
-        val_acc = total_val_accuracy / len(data_char.datasets_val)
-        val_loss = total_val_loss
+    train_acc = total_train_accuracy / len(data_char.datasets_train)
+    train_loss = total_train_loss
+    val_acc = total_val_accuracy / len(data_char.datasets_val)
+    val_loss = total_val_loss
 
-        print(f"epoch:{epoch+1}, train_acc={train_acc}, train_loss={train_loss}, val_acc={val_acc}, val_loss={val_loss}")
+    print(f"epoch:{epoch+1}, train_acc={train_acc}, train_loss={train_loss}, val_acc={val_acc}, val_loss={val_loss}")
 
-        writer.add_scalar("train_acc", train_acc, epoch+1)
-        writer.add_scalar("train_loss", train_loss, epoch+1)
-        writer.add_scalar("val_acc", val_acc, epoch+1)
-        writer.add_scalar("val_loss", val_loss, epoch+1)
+    writer.add_scalar("train_acc", train_acc, epoch+1)
+    writer.add_scalar("train_loss", train_loss, epoch+1)
+    writer.add_scalar("val_acc", val_acc, epoch+1)
+    writer.add_scalar("val_loss", val_loss, epoch+1)
 
-        torch.save(net, f"epoch_{epoch+1}.pth")
-        print(f"第{epoch+1}轮模型参数已保存")
+    torch.save(net, f"epoch_{epoch+1}.pth")
+    print(f"第{epoch+1}轮模型参数已保存")
