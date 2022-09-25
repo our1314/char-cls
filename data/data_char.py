@@ -27,5 +27,5 @@ l = len(datasets_all)
 datasets_train = torch.utils.data.Subset(datasets_all, range(int(0.9 * l)))
 datasets_val = torch.utils.data.Subset(datasets_all, range(int(0.1 * l)))
 
-dataloader_train = DataLoader(datasets_train, 5, shuffle=True)
-dataloader_val = DataLoader(datasets_val, 2, shuffle=True)
+dataloader_train = DataLoader(datasets_train, 2, shuffle=True)
+dataloader_val = DataLoader(datasets_val, 1, shuffle=True)
