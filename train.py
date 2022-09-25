@@ -15,7 +15,6 @@ from models.classify_net1 import classify_net1
 
 # 定义设备
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
 # 设置一些训练可视化的参数
 # 记录训练的次数
 total_train_step = 0
