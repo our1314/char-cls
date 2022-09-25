@@ -6,6 +6,7 @@
     验证
 """
 import torch
+import torchvision
 from torch.utils.tensorboard.writer import SummaryWriter
 from torch import nn
 
@@ -42,6 +43,15 @@ for epoch in range(epoch_count):
     for imgs, labels in data_char.dataloader_train:
         imgs = imgs.to(device)
         labels = labels.to(device)
+
+        # #region 显示训练图像
+        # img1 = imgs[0, :, :, :]
+        # img2 = imgs[1, :, :, :]
+        # img1 = torchvision.transforms.ToPILImage()(img1)
+        # img1.show()
+        # img2 = torchvision.transforms.ToPILImage()(img2)
+        # img2.show()
+        # #endregion
 
         out = net(imgs)
         loss = loss_fn(out, labels)
