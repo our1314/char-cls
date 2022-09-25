@@ -101,5 +101,12 @@ for epoch in range(epoch_count):
     writer.add_scalar("val_acc", val_acc, epoch+1)
     writer.add_scalar("val_loss", val_loss, epoch+1)
 
-    torch.save(net, f"epoch_{epoch+1}.pth")
-    print(f"第{epoch+1}轮模型参数已保存")
+    # 保存训练模型
+    model_path = 'out'
+    state_dict = {'net': net.state_dict(),
+                  'optimizer': optimizer.state_dict(),
+                  'epoch': epoch}
+
+    p = f'{model_path}/{time.strftime("%Y.%m.%d_%H.%M.%S")}-epoch={epoch}-loss={str(round(train_loss, 5))}-acc={str(round(train_acc, 5))}.pth'
+    torch.save(state_dict, p)
+    # print(f"第{epoch+1}轮模型参数已保存")
