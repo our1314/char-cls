@@ -25,9 +25,9 @@ epoch_count = 300
 net = classify_net1()
 net.to(device)
 loss_fn = nn.CrossEntropyLoss()
-optimizer = torch.optim.SGD(net.parameters(), lr=0.01)
-
-writer = SummaryWriter("../logs015_train")
+# optimizer = torch.optim.SGD(net.parameters(), lr=0.01)
+optimizer = torch.optim.Adam(net.parameters(), lr=0.01)
+writer = SummaryWriter("logs")
 
 print(f"训练集的数量:{len(data_char.datasets_train)}")
 print(f"训练集的数量:{len(data_char.datasets_val)}")
@@ -37,6 +37,8 @@ for epoch in range(epoch_count):
 
     # 训练
     net.train()
+    total_train_accuracy = 0
+    total_train_loss = 0
     for imgs, labels in data_char.dataloader_train:
         imgs = imgs.to(device)
         labels = labels.to(device)
@@ -47,6 +49,10 @@ for epoch in range(epoch_count):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
+
+        acc = (out.argmax(1) == labels).sum()
+        total_train_accuracy += acc
+        total_train_loss += loss
 
     # 验证
     net.eval()
@@ -74,12 +80,17 @@ for epoch in range(epoch_count):
             acc = (out.argmax(1) == labels).sum()
             total_val_accuracy += acc
 
-        print(f"整体测试集上的Loss:{total_val_loss}")
-        writer.add_scalar("test_loss", total_val_loss, total_val_step)
+        train_acc = total_train_accuracy / len(data_char.datasets_train)
+        train_loss = total_train_loss
+        val_acc = total_val_accuracy / len(data_char.datasets_val)
+        val_loss = total_val_loss
 
-        print(total_val_accuracy, len(data_char.datasets_val))
-        print(f"整体测试集上的Accuracy:{total_val_accuracy / len(data_char.datasets_val)}")
-        writer.add_scalar("test_accuracy", total_val_accuracy / len(data_char.datasets_val), epoch+1)# 计算精度需要除验证数据集的长度，而不是其dataloader(数量不对)
+        print(f"epoch:{epoch+1}, train_acc={train_acc}, train_loss={train_loss}, val_acc={val_acc}, val_loss={val_loss}")
 
-        torch.save(net, f"epoch_{epoch + 1}.pth")
-        print(f"第{epoch + 1}轮模型参数已保存")
+        writer.add_scalar("train_acc", train_acc, epoch+1)
+        writer.add_scalar("train_loss", train_loss, epoch+1)
+        writer.add_scalar("val_acc", val_acc, epoch+1)
+        writer.add_scalar("val_loss", val_loss, epoch+1)
+
+        torch.save(net, f"epoch_{epoch+1}.pth")
+        print(f"第{epoch+1}轮模型参数已保存")
