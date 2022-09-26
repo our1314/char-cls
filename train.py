@@ -73,6 +73,7 @@ def train(opt):
             # img2.show()
             # endregion
 
+            cnt += 1
             if cnt < 30:  # 保存30张训练图像
                 img1 = imgs[0, :, :, :]
                 img1 = torchvision.transforms.ToPILImage()(img1)
