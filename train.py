@@ -48,7 +48,7 @@ def train(opt):
     print(f"验证集的数量:{len(data_char2.datasets_val)}")
 
     for epoch in range(start_epoch, epoch_count):
-        print(f"----第{epoch + 1}轮训练开始----")
+        print(f"----第{epoch}轮训练开始----")
 
         # 训练
         net.train()
@@ -123,7 +123,7 @@ def train(opt):
 
         if not os.path.exists(opt.model_save_path):
             os.makedirs(opt.model_save_path)
-        f = f'{opt.model_save_path}/{time.strftime("%Y.%m.%d_%H.%M.%S")}-epoch={epoch}-loss={str(round(train_loss.item(), 5))}-acc={str(round(train_acc.item(), 5))}.pth'
+        f = f'{opt.model_save_path}/epoch={epoch}-train_acc={str(train_acc.item())}.pth'
         torch.save(state_dict, f)
         print(f"第{epoch}轮模型参数已保存")
 
