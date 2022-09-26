@@ -17,7 +17,7 @@ from torch import nn
 from data import data_char
 from models.classify_net1 import classify_net1
 
-model_path = 'out'
+
 def train(opt):
     # 定义设备
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -44,7 +44,7 @@ def train(opt):
         lists = os.listdir(opt.model_save_path)#获取模型路径下的模型文件
         if len(lists) > 0:
             lists.sort(key=lambda fn: os.path.getmtime(opt.model_save_path + "\\" + fn))  # 按时间排序
-            last_pt_path = os.path.join(model_path, lists[len(lists) - 1])
+            last_pt_path = os.path.join(opt.model_save_path, lists[len(lists) - 1])
             checkpoint = torch.load(last_pt_path)
             start_epoch = checkpoint['epoch']
             net.load_state_dict(checkpoint['net'])
@@ -65,10 +65,10 @@ def train(opt):
             labels = labels.to(device)
 
             # #region 显示训练图像
-            img1 = imgs[0, :, :, :]
+            # img1 = imgs[0, :, :, :]
             # img2 = imgs[1, :, :, :]
-            img1 = torchvision.transforms.ToPILImage()(img1)
-            img1.show()
+            # img1 = torchvision.transforms.ToPILImage()(img1)
+            # img1.show()
             # img2 = torchvision.transforms.ToPILImage()(img2)
             # img2.show()
             # #endregion
