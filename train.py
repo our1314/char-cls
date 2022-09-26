@@ -25,8 +25,8 @@ def train(opt):
     net = classify_net1()
     net.to(device)
     loss_fn = nn.CrossEntropyLoss()
-    # optimizer = torch.optim.SGD(net.parameters(), lr=0.01)
-    optimizer = torch.optim.Adam(net.parameters(), lr=0.01)
+    optimizer = torch.optim.SGD(net.parameters(), lr=0.01)
+    # optimizer = torch.optim.Adam(net.parameters(), lr=0.01)
     writer = SummaryWriter("logs")
 
     start_epoch = 0
@@ -123,8 +123,8 @@ def train(opt):
 
         if not os.path.exists(opt.model_save_path):
             os.makedirs(opt.model_save_path)
-        p = f'{opt.model_save_path}/{time.strftime("%Y.%m.%d_%H.%M.%S")}-epoch={epoch}-loss={str(round(train_loss.item(), 5))}-acc={str(round(train_acc.item(), 5))}.pth'
-        torch.save(state_dict, p)
+        f = f'{opt.model_save_path}/{time.strftime("%Y.%m.%d_%H.%M.%S")}-epoch={epoch}-loss={str(round(train_loss.item(), 5))}-acc={str(round(train_acc.item(), 5))}.pth'
+        torch.save(state_dict, f)
         print(f"第{epoch}轮模型参数已保存")
 
 
