@@ -7,6 +7,7 @@
 """
 import argparse
 import os
+import pathlib
 import time
 import torch
 import torchvision
@@ -121,8 +122,7 @@ def train(opt):
                       'optimizer': optimizer.state_dict(),
                       'epoch': epoch}
 
-        if not os.path.exists(opt.model_save_path):
-            os.makedirs(opt.model_save_path)
+        pathlib.Path(opt.model_save_path).mkdir(parents=True, exist_ok=True)
         f = f'{opt.model_save_path}/epoch={epoch}-train_acc={str(train_acc.item())}.pth'
         torch.save(state_dict, f)
         print(f"第{epoch}轮模型参数已保存")

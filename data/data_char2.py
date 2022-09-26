@@ -8,26 +8,35 @@
 dataset 为数据集
 dataloader 为数据集加载器
 """
+import os
+
 import PIL
 import torch
 import torchvision
 from torchvision.datasets import ImageFolder
 from torch.utils.data import DataLoader
 
-trans = torchvision.transforms.Compose([
+trans_train = torchvision.transforms.Compose([
     # torchvision.transforms.RandomHorizontalFlip(),
     # torchvision.transforms.RandomVerticalFlip(),
     torchvision.transforms.Pad([28, 10]),
     torchvision.transforms.Resize((300, 300)),
     # torchvision.transforms.RandomRotation(degrees=10),
     torchvision.transforms.RandomAffine(degrees=10, scale=[0.7, 1.0]),
-    torchvision.transforms.RandomGrayscale(p=0.1),
+    torchvision.transforms.RandomGrayscale(p=0.3),
     torchvision.transforms.ToTensor(),
     # torchvision.transforms.Normalize(mean=[0.485, 0.456, 0.406],std=[0.229, 0.224, 0.225])
 ])
 
-datasets_train = ImageFolder('C:/Users/pc/Desktop/ocr/train', transform=trans)
-datasets_val = ImageFolder('C:/Users/pc/Desktop/ocr/val', transform=trans)
+trans_val = torchvision.transforms.Compose([
+    torchvision.transforms.Pad([28, 10]),
+    torchvision.transforms.Resize((300, 300)),
+    torchvision.transforms.ToTensor(),
+    # torchvision.transforms.Normalize(mean=[0.485, 0.456, 0.406],std=[0.229, 0.224, 0.225])
+])
+
+datasets_train = ImageFolder('C:/Users/pc/Desktop/ocr', transform=trans_train)
+datasets_val = ImageFolder('C:/Users/pc/Desktop/ocr', transform=trans_val)
 
 dataloader_train = DataLoader(datasets_train, 10, shuffle=True)
 dataloader_val = DataLoader(datasets_val, 4, shuffle=True)
@@ -39,3 +48,4 @@ if __name__ == '__main__':
         img1 = imgs[0, :, :, :]
         img1 = torchvision.transforms.ToPILImage()(img1)
         img1.show()
+        os.mkdir()
