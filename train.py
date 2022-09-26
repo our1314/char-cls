@@ -8,13 +8,10 @@
 import argparse
 import os
 import time
-
 import torch
 import torchvision
 from torch.utils.tensorboard.writer import SummaryWriter
 from torch import nn
-
-from data import data_char
 from models.classify_net1 import classify_net1
 
 
@@ -50,8 +47,8 @@ def train(opt):
             net.load_state_dict(checkpoint['net'])
             opt.load_state_dict(checkpoint['optimizer'])
 
-    print(f"训练集的数量:{len(data_char.datasets_train)}")
-    print(f"训练集的数量:{len(data_char.datasets_val)}")
+    print(f"训练集的数量:{len(data_char2.datasets_train)}")
+    print(f"训练集的数量:{len(data_char2.datasets_val)}")
 
     for epoch in range(start_epoch, epoch_count):
         print(f"----第{epoch + 1}轮训练开始----")
@@ -60,7 +57,7 @@ def train(opt):
         net.train()
         total_train_accuracy = 0
         total_train_loss = 0
-        for imgs, labels in data_char.dataloader_train:
+        for imgs, labels in data_char2.dataloader_train:
             imgs = imgs.to(device)
             labels = labels.to(device)
 
@@ -89,7 +86,7 @@ def train(opt):
         total_val_loss = 0
         total_val_accuracy = 0
         with torch.no_grad():
-            for imgs, labels in data_char.dataloader_val:
+            for imgs, labels in data_char2.dataloader_val:
                 imgs = imgs.to(device)
 
                 #region 显示训练图像
@@ -110,9 +107,9 @@ def train(opt):
                 acc = (out.argmax(1) == labels).sum()
                 total_val_accuracy += acc
 
-        train_acc = total_train_accuracy / len(data_char.datasets_train)
+        train_acc = total_train_accuracy / len(data_char2.datasets_train)
         train_loss = total_train_loss
-        val_acc = total_val_accuracy / len(data_char.datasets_val)
+        val_acc = total_val_accuracy / len(data_char2.datasets_val)
         val_loss = total_val_loss
 
         print(f"epoch:{epoch}, train_acc={train_acc}, train_loss={train_loss}, val_acc={val_acc}, val_loss={val_loss}")
