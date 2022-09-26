@@ -45,7 +45,7 @@ def train(opt):
             opt.load_state_dict(checkpoint['optimizer'])
 
     print(f"训练集的数量:{len(data_char2.datasets_train)}")
-    print(f"训练集的数量:{len(data_char2.datasets_val)}")
+    print(f"验证集的数量:{len(data_char2.datasets_val)}")
 
     for epoch in range(start_epoch, epoch_count):
         print(f"----第{epoch + 1}轮训练开始----")
