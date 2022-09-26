@@ -132,7 +132,7 @@ def train(opt):
                       'optimizer': optimizer.state_dict(),
                       'epoch': epoch}
 
-        pathlib.Path(opt.model_save_path).mkdir(parents=True, exist_ok=True)  # https://zhuanlan.zhihu.com/p/317254621
+        pathlib.Path(f'{opt.model_save_path}/weights').mkdir(parents=True, exist_ok=True)  # https://zhuanlan.zhihu.com/p/317254621
         f = f'{opt.model_save_path}/weights/epoch={epoch}-train_acc={str(train_acc.item())}.pth'
         torch.save(state_dict, f)
         print(f"第{epoch}轮模型参数已保存")
@@ -145,7 +145,7 @@ def train(opt):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--resume', nargs='?', const=True, default=True, help='resume most recent training')
+    parser.add_argument('--resume', nargs='?', const=True, default=False, help='resume most recent training')
     parser.add_argument('--save_period', type=int, default=-1, help='Log model after every "save_period" epoch')
     parser.add_argument('--model_save_path', default='run/train', help='save to project/name')
 
