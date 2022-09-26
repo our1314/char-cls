@@ -35,7 +35,7 @@ def train(opt):
             断点继续参考：
             https://www.zhihu.com/question/482169025/answer/2081124014
             '''
-        lists = os.listdir(opt.model_save_path)#获取模型路径下的模型文件
+        lists = os.listdir(opt.model_save_path)  # 获取模型路径下的模型文件
         if len(lists) > 0:
             lists.sort(key=lambda fn: os.path.getmtime(opt.model_save_path + "\\" + fn))  # 按时间排序
             last_pt_path = os.path.join(opt.model_save_path, lists[len(lists) - 1])
@@ -58,14 +58,14 @@ def train(opt):
             imgs = imgs.to(device)
             labels = labels.to(device)
 
-            #region 显示训练图像
+            # region 显示训练图像
             # img1 = imgs[0, :, :, :]
             # img2 = imgs[1, :, :, :]
             # img1 = torchvision.transforms.ToPILImage()(img1)
             # img1.show()
             # img2 = torchvision.transforms.ToPILImage()(img2)
             # img2.show()
-            #endregion
+            # endregion
 
             out = net(imgs)
             loss = loss_fn(out, labels)
@@ -86,14 +86,14 @@ def train(opt):
             for imgs, labels in data_char2.dataloader_val:
                 imgs = imgs.to(device)
 
-                #region 显示训练图像
+                # region 显示训练图像
                 # img1 = imgs[0, :, :, :]
                 # img2 = imgs[1, :, :, :]
                 # img1 = torchvision.transforms.ToPILImage()(img1)
                 # img1.show()
                 # img2 = torchvision.transforms.ToPILImage()(img2)
                 # img2.show()
-                #endregion
+                # endregion
 
                 labels = labels.to(device)
                 out = net(imgs)
@@ -136,4 +136,3 @@ if __name__ == '__main__':
 
     opt = parser.parse_args()
     train(opt)
-
