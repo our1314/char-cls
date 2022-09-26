@@ -39,14 +39,14 @@ trans_train = torchvision.transforms.Compose([
     torchvision.transforms.RandomAffine(degrees=10, scale=[0.7, 1.0]),
     torchvision.transforms.RandomGrayscale(p=0.3),
     torchvision.transforms.ToTensor(),
-    torchvision.transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    # torchvision.transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
 trans_val = torchvision.transforms.Compose([
     SquarePad(),
     torchvision.transforms.Resize(200),
     torchvision.transforms.ToTensor(),
-    torchvision.transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    # torchvision.transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
 datasets_train = ImageFolder('C:/Users/pc/Desktop/ocr', transform=trans_train)
