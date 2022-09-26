@@ -26,7 +26,7 @@ def train(opt):
     net = classify_net1()
     net.to(device)
     loss_fn = nn.CrossEntropyLoss()
-    optimizer = torch.optim.SGD(net.parameters(), lr=0.001)
+    optimizer = torch.optim.SGD(net.parameters(), lr=0.01)
     # optimizer = torch.optim.Adam(net.parameters(), lr=0.01)
     writer = SummaryWriter("logs")
 
