@@ -9,8 +9,11 @@ import argparse
 import os
 import pathlib
 import time
+
+import PIL
 import torch
 import torchvision
+from PIL.Image import Image
 from torch.utils.tensorboard.writer import SummaryWriter
 from torch import nn
 
@@ -27,9 +30,9 @@ def train(opt):
     net = net_resnet18()  # classify_net1()
     net.to(device)
     loss_fn = nn.CrossEntropyLoss()
-    optimizer = torch.optim.SGD(net.parameters(), lr=0.01)
+    optimizer = torch.optim.SGD(net.parameters(), lr=0.001)
     # optimizer = torch.optim.Adam(net.parameters(), lr=0.01)
-    writer = SummaryWriter("logs")
+    writer = SummaryWriter(f"{opt.model_save_path}/logs")
 
     start_epoch = 0
     if opt.resume:
@@ -37,10 +40,10 @@ def train(opt):
         断点继续参考：
         https://www.zhihu.com/question/482169025/answer/2081124014
         '''
-        lists = os.listdir(opt.model_save_path)  # 获取模型路径下的模型文件
+        lists = os.listdir(f"{opt.model_save_path}/weights")  # 获取模型路径下的模型文件
         if len(lists) > 0:
-            lists.sort(key=lambda fn: os.path.getmtime(opt.model_save_path + "\\" + fn))  # 按时间排序
-            last_pt_path = os.path.join(opt.model_save_path, lists[len(lists) - 1])
+            lists.sort(key=lambda fn: os.path.getmtime(f"{opt.model_save_path}/weights" + "\\" + fn))  # 按时间排序
+            last_pt_path = os.path.join(f"{opt.model_save_path}/weights", lists[len(lists) - 1])
             checkpoint = torch.load(last_pt_path)
             start_epoch = checkpoint['epoch']
             net.load_state_dict(checkpoint['net'])
@@ -56,18 +59,24 @@ def train(opt):
         net.train()
         total_train_accuracy = 0
         total_train_loss = 0
+        cnt = 0
         for imgs, labels in data_char2.dataloader_train:
             imgs = imgs.to(device)
             labels = labels.to(device)
 
-            #region 显示训练图像
+            # region 显示训练图像
             # img1 = imgs[0, :, :, :]
             # img2 = imgs[1, :, :, :]
             # img1 = torchvision.transforms.ToPILImage()(img1)
             # img1.show()
             # img2 = torchvision.transforms.ToPILImage()(img2)
             # img2.show()
-            #endregion
+            # endregion
+
+            if cnt < 30:  # 保存30张训练图像
+                img1 = imgs[0, :, :, :]
+                img1 = torchvision.transforms.ToPILImage()(img1)
+                img1.save(f'{opt.model_save_path}/{time.strftime("%Y.%m.%d_%H.%M.%S")}.png', 'png')
 
             out = net(imgs)
             loss = loss_fn(out, labels)
@@ -88,14 +97,14 @@ def train(opt):
             for imgs, labels in data_char2.dataloader_val:
                 imgs = imgs.to(device)
 
-                #region 显示训练图像
+                # region 显示训练图像
                 # img1 = imgs[0, :, :, :]
                 # img2 = imgs[1, :, :, :]
                 # img1 = torchvision.transforms.ToPILImage()(img1)
                 # img1.show()
                 # img2 = torchvision.transforms.ToPILImage()(img2)
                 # img2.show()
-                #endregion
+                # endregion
 
                 labels = labels.to(device)
                 out = net(imgs)
@@ -124,9 +133,11 @@ def train(opt):
                       'epoch': epoch}
 
         pathlib.Path(opt.model_save_path).mkdir(parents=True, exist_ok=True)  # https://zhuanlan.zhihu.com/p/317254621
-        f = f'{opt.model_save_path}/epoch={epoch}-train_acc={str(train_acc.item())}.pth'
+        f = f'{opt.model_save_path}/weights/epoch={epoch}-train_acc={str(train_acc.item())}.pth'
         torch.save(state_dict, f)
         print(f"第{epoch}轮模型参数已保存")
+
+        # 保存TensorBoard日志
 
         # 保存
         # net.state_dict()
@@ -134,7 +145,7 @@ def train(opt):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--resume', nargs='?', const=True, default=False, help='resume most recent training')
+    parser.add_argument('--resume', nargs='?', const=True, default=True, help='resume most recent training')
     parser.add_argument('--save_period', type=int, default=-1, help='Log model after every "save_period" epoch')
     parser.add_argument('--model_save_path', default='run/train', help='save to project/name')
 
