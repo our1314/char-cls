@@ -26,8 +26,8 @@ trans = torchvision.transforms.Compose([
     # torchvision.transforms.Normalize(mean=[0.485, 0.456, 0.406],std=[0.229, 0.224, 0.225])
 ])
 
-datasets_train = ImageFolder('D:/桌面/ocr', transform=trans)
-datasets_val = ImageFolder('D:/桌面/ocr', transform=trans)
+datasets_train = ImageFolder('C:/Users/pc/Desktop/ocr/train', transform=trans)
+datasets_val = ImageFolder('C:/Users/pc/Desktop/ocr/val', transform=trans)
 
 dataloader_train = DataLoader(datasets_train, 10, shuffle=True)
 dataloader_val = DataLoader(datasets_val, 4, shuffle=True)

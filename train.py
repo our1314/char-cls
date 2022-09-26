@@ -12,17 +12,14 @@ import torch
 import torchvision
 from torch.utils.tensorboard.writer import SummaryWriter
 from torch import nn
+
+from data import data_char2
 from models.classify_net1 import classify_net1
 
 
 def train(opt):
     # 定义设备
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    # 设置一些训练可视化的参数
-    # 记录训练的次数
-    total_train_step = 0
-    # 记录测试的次数
-    total_val_step = 0
     # 训练轮数
     epoch_count = 300
     net = classify_net1()
@@ -61,14 +58,14 @@ def train(opt):
             imgs = imgs.to(device)
             labels = labels.to(device)
 
-            # #region 显示训练图像
+            #region 显示训练图像
             # img1 = imgs[0, :, :, :]
             # img2 = imgs[1, :, :, :]
             # img1 = torchvision.transforms.ToPILImage()(img1)
             # img1.show()
             # img2 = torchvision.transforms.ToPILImage()(img2)
             # img2.show()
-            # #endregion
+            #endregion
 
             out = net(imgs)
             loss = loss_fn(out, labels)
@@ -124,9 +121,11 @@ def train(opt):
                       'optimizer': optimizer.state_dict(),
                       'epoch': epoch}
 
+        if os.path.exists(opt.model_save_path):
+            os.mkdir(opt.model_save_path)
         p = f'{opt.model_save_path}/{time.strftime("%Y.%m.%d_%H.%M.%S")}-epoch={epoch}-loss={str(round(train_loss.item(), 5))}-acc={str(round(train_acc.item(), 5))}.pth'
         torch.save(state_dict, p)
-        # print(f"第{epoch+1}轮模型参数已保存")
+        print(f"第{epoch}轮模型参数已保存")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
