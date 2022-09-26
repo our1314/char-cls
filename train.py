@@ -122,7 +122,7 @@ def train(opt):
                       'optimizer': optimizer.state_dict(),
                       'epoch': epoch}
 
-        pathlib.Path(opt.model_save_path).mkdir(parents=True, exist_ok=True)
+        pathlib.Path(opt.model_save_path).mkdir(parents=True, exist_ok=True)  # https://zhuanlan.zhihu.com/p/317254621
         f = f'{opt.model_save_path}/epoch={epoch}-train_acc={str(train_acc.item())}.pth'
         torch.save(state_dict, f)
         print(f"第{epoch}轮模型参数已保存")
