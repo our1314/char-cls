@@ -115,12 +115,12 @@ def train(opt):
         val_acc = total_val_accuracy / len(data_char.datasets_val)
         val_loss = total_val_loss
 
-        print(f"epoch:{epoch+1}, train_acc={train_acc}, train_loss={train_loss}, val_acc={val_acc}, val_loss={val_loss}")
+        print(f"epoch:{epoch}, train_acc={train_acc}, train_loss={train_loss}, val_acc={val_acc}, val_loss={val_loss}")
 
-        writer.add_scalar("train_acc", train_acc, epoch+1)
-        writer.add_scalar("train_loss", train_loss, epoch+1)
-        writer.add_scalar("val_acc", val_acc, epoch+1)
-        writer.add_scalar("val_loss", val_loss, epoch+1)
+        writer.add_scalar("train_acc", train_acc, epoch)
+        writer.add_scalar("train_loss", train_loss, epoch)
+        writer.add_scalar("val_acc", val_acc, epoch)
+        writer.add_scalar("val_loss", val_loss, epoch)
 
         # 保存训练模型
         state_dict = {'net': net.state_dict(),

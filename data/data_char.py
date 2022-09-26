@@ -35,7 +35,7 @@ dataloader_train = DataLoader(datasets_train, 10, shuffle=True)
 dataloader_val = DataLoader(datasets_val, 4, shuffle=True)
 
 if __name__ == '__main__':
-    dataloader_test = DataLoader(datasets_all, 1, shuffle=True)
+    dataloader_test = DataLoader(datasets_all, batch_size=1, shuffle=True)
     for imgs, labels in dataloader_test:
         img1 = imgs[0, :, :, :]
         img1 = torchvision.transforms.ToPILImage()(img1)
