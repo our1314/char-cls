@@ -16,6 +16,7 @@ from torch import nn
 
 from data import data_char2
 from models.classify_net1 import classify_net1
+from models.net_resnet18 import net_resnet18
 
 
 def train(opt):
@@ -23,7 +24,7 @@ def train(opt):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     # 训练轮数
     epoch_count = 300
-    net = classify_net1()
+    net = net_resnet18()  # classify_net1()
     net.to(device)
     loss_fn = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(net.parameters(), lr=0.01)
@@ -59,14 +60,14 @@ def train(opt):
             imgs = imgs.to(device)
             labels = labels.to(device)
 
-            # region 显示训练图像
+            #region 显示训练图像
             # img1 = imgs[0, :, :, :]
             # img2 = imgs[1, :, :, :]
             # img1 = torchvision.transforms.ToPILImage()(img1)
             # img1.show()
             # img2 = torchvision.transforms.ToPILImage()(img2)
             # img2.show()
-            # endregion
+            #endregion
 
             out = net(imgs)
             loss = loss_fn(out, labels)
@@ -87,14 +88,14 @@ def train(opt):
             for imgs, labels in data_char2.dataloader_val:
                 imgs = imgs.to(device)
 
-                # region 显示训练图像
+                #region 显示训练图像
                 # img1 = imgs[0, :, :, :]
                 # img2 = imgs[1, :, :, :]
                 # img1 = torchvision.transforms.ToPILImage()(img1)
                 # img1.show()
                 # img2 = torchvision.transforms.ToPILImage()(img2)
                 # img2.show()
-                # endregion
+                #endregion
 
                 labels = labels.to(device)
                 out = net(imgs)
@@ -127,9 +128,8 @@ def train(opt):
         torch.save(state_dict, f)
         print(f"第{epoch}轮模型参数已保存")
 
-        #保存
-        #net.state_dict()
-
+        # 保存
+        # net.state_dict()
 
 
 if __name__ == '__main__':

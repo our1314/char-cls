@@ -4,14 +4,15 @@ from torch.nn import Module, Linear
 from torchvision.models.resnet import resnet101, resnet50, resnet34, resnet18
 
 
-class classify_net1(Module):
+class net_resnet18(Module):
     def __init__(self):
-        super(classify_net1, self).__init__()
-        self.resnet = resnet101(pretrained=True)
-        self.resnet.fc = Linear(2048, 36, bias=True)  # 更改全连接层
+        super(net_resnet18, self).__init__()
+        self.resnet = resnet18(pretrained=True)
+        self.resnet.fc = Linear(512, 36, bias=True)  # 更改全连接层
         self.resnet.fc.add_module('softmax', torch.nn.Softmax())
 
         print(self.resnet)  # 打印网络模型
+
         # for name, param in self.resnet.named_parameters():  # 除全连接层外全部冻结，不训练
         #     if 'fc' in name:
         #         param.requires_grad = True
