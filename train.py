@@ -121,11 +121,12 @@ def train(opt):
                       'optimizer': optimizer.state_dict(),
                       'epoch': epoch}
 
-        if os.path.exists(opt.model_save_path):
+        if os.path.exists(opt.model_save_path) is False:
             os.mkdir(opt.model_save_path)
         p = f'{opt.model_save_path}/{time.strftime("%Y.%m.%d_%H.%M.%S")}-epoch={epoch}-loss={str(round(train_loss.item(), 5))}-acc={str(round(train_acc.item(), 5))}.pth'
         torch.save(state_dict, p)
         print(f"第{epoch}轮模型参数已保存")
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

@@ -32,6 +32,7 @@ datasets_val = ImageFolder('C:/Users/pc/Desktop/ocr/val', transform=trans)
 dataloader_train = DataLoader(datasets_train, 10, shuffle=True)
 dataloader_val = DataLoader(datasets_val, 4, shuffle=True)
 
+
 if __name__ == '__main__':
     dataloader_test = DataLoader(datasets_train, batch_size=1, shuffle=True)
     for imgs, labels in dataloader_test:
