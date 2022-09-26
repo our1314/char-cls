@@ -127,6 +127,10 @@ def train(opt):
         torch.save(state_dict, f)
         print(f"第{epoch}轮模型参数已保存")
 
+        #保存
+        #net.state_dict()
+
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
