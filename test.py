@@ -48,7 +48,7 @@ gg = torchvision.transforms.ToPILImage()(img[0, :, :, :])
 gg.show()
 print(img.shape)
 
-path = 'run/train/epoch=13-train_acc=1.0.pth'
+path = 'run/train/epoch=51-train_acc=1.0.pth'
 checkpoint = torch.load(path)
 net = classify_net1()
 # model = torch.load(checkpoint['net'])

@@ -33,9 +33,9 @@ def train(opt):
     start_epoch = 0
     if opt.resume:
         '''
-            断点继续参考：
-            https://www.zhihu.com/question/482169025/answer/2081124014
-            '''
+        断点继续参考：
+        https://www.zhihu.com/question/482169025/answer/2081124014
+        '''
         lists = os.listdir(opt.model_save_path)  # 获取模型路径下的模型文件
         if len(lists) > 0:
             lists.sort(key=lambda fn: os.path.getmtime(opt.model_save_path + "\\" + fn))  # 按时间排序
