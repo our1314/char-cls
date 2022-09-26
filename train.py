@@ -26,7 +26,7 @@ def train(opt):
     net = classify_net1()
     net.to(device)
     loss_fn = nn.CrossEntropyLoss()
-    optimizer = torch.optim.SGD(net.parameters(), lr=0.01)
+    optimizer = torch.optim.SGD(net.parameters(), lr=0.001)
     # optimizer = torch.optim.Adam(net.parameters(), lr=0.01)
     writer = SummaryWriter("logs")
 
@@ -43,7 +43,7 @@ def train(opt):
             checkpoint = torch.load(last_pt_path)
             start_epoch = checkpoint['epoch']
             net.load_state_dict(checkpoint['net'])
-            opt.load_state_dict(checkpoint['optimizer'])
+            optimizer.load_state_dict(checkpoint['optimizer'])
 
     print(f"训练集的数量:{len(data_char2.datasets_train)}")
     print(f"验证集的数量:{len(data_char2.datasets_val)}")
@@ -130,7 +130,7 @@ def train(opt):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--resume', nargs='?', const=True, default=False, help='resume most recent training')
+    parser.add_argument('--resume', nargs='?', const=True, default=True, help='resume most recent training')
     parser.add_argument('--save_period', type=int, default=-1, help='Log model after every "save_period" epoch')
     parser.add_argument('--model_save_path', default='run/train', help='save to project/name')
 
