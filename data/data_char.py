@@ -1,4 +1,5 @@
 """
+2022.9.26
 从文件夹读取数据
 提供dataloader
 数据增强
@@ -19,7 +20,7 @@ trans = torchvision.transforms.Compose([
     torchvision.transforms.Pad([28, 10]),
     torchvision.transforms.Resize((300, 300)),
     # torchvision.transforms.RandomRotation(degrees=10),
-    torchvision.transforms.RandomAffine(degrees=10, scale=[0.7, 1.3]),
+    torchvision.transforms.RandomAffine(degrees=10, scale=[0.7, 1.0]),
     torchvision.transforms.RandomGrayscale(p=0.1),
     torchvision.transforms.ToTensor(),
     # torchvision.transforms.Normalize(mean=[0.485, 0.456, 0.406],std=[0.229, 0.224, 0.225])
