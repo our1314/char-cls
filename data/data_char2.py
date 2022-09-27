@@ -35,9 +35,10 @@ trans_train = torchvision.transforms.Compose([
     # torchvision.transforms.RandomHorizontalFlip(),
     # torchvision.transforms.RandomVerticalFlip(),
     SquarePad(),
+    torchvision.transforms.ColorJitter(brightness=0.4, contrast=0.3, saturation=0.3),  # 亮度、对比度、饱和度
     torchvision.transforms.Resize(200),
-    torchvision.transforms.RandomAffine(degrees=10, scale=[0.7, 1.0]),
-    torchvision.transforms.RandomGrayscale(p=0.3),
+    torchvision.transforms.RandomAffine(degrees=20, scale=[0.7, 1.0]),
+    # torchvision.transforms.RandomGrayscale(p=0.4),
     torchvision.transforms.ToTensor(),
     # torchvision.transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])

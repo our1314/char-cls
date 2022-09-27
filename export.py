@@ -3,7 +3,7 @@ import torch.onnx.utils
 from models.classify_net1 import classify_net1
 from models.net_resnet18 import net_resnet18
 
-path = 'run/train/weights/epoch=257-train_acc=1.0.pth'
+path = 'run/train/weights/epoch=299-train_acc=1.0.pth'
 f = path.replace('.pth', '.onnx')
 
 x = torch.randn(1, 3, 200, 200)
@@ -16,7 +16,7 @@ torch.onnx.export(net,
                   x,
                   f,
                   opset_version=10,
-                  do_constant_folding=True,
+                  # do_constant_folding=True,
                   input_names=['input'],
                   output_names=['output'],
                   verbose='True')
