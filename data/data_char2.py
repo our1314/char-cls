@@ -31,13 +31,14 @@ class SquarePad:
         return image
 
 
+# Tip:图像增强太过了会导致识别率下降
 trans_train = torchvision.transforms.Compose([
     # torchvision.transforms.RandomHorizontalFlip(),
     # torchvision.transforms.RandomVerticalFlip(),
 
-    torchvision.transforms.GaussianBlur(kernel_size=(5, 15), sigma=(0.01, 15.0)),  # 随机高斯模糊
+    torchvision.transforms.GaussianBlur(kernel_size=(5, 15), sigma=(0.1, 4.0)),  # 随机高斯模糊
     SquarePad(),
-    torchvision.transforms.ColorJitter(brightness=0.4, contrast=0.3, saturation=0.3),  # 亮度、对比度、饱和度
+    torchvision.transforms.ColorJitter(brightness=(0.8, 1.5), contrast=(0.8, 1.2), saturation=0.9),  # 亮度、对比度、饱和度
     torchvision.transforms.Resize(200),
     torchvision.transforms.RandomAffine(degrees=20, scale=[0.7, 1.0]),
     # torchvision.transforms.RandomGrayscale(p=0.4),
