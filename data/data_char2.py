@@ -36,7 +36,7 @@ trans_train = torchvision.transforms.Compose([
     # torchvision.transforms.RandomHorizontalFlip(),
     # torchvision.transforms.RandomVerticalFlip(),
 
-    torchvision.transforms.GaussianBlur(kernel_size=(5, 15), sigma=(0.1, 4.0)),  # 随机高斯模糊
+    torchvision.transforms.GaussianBlur(kernel_size=(5, 15), sigma=(0.1, 3.0)),  # 随机高斯模糊
     SquarePad(),
     torchvision.transforms.ColorJitter(brightness=(0.8, 1.5), contrast=(0.8, 1.2), saturation=0.9),  # 亮度、对比度、饱和度
     torchvision.transforms.Resize(200),

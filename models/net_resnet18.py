@@ -9,7 +9,8 @@ class net_resnet18(Module):
         super(net_resnet18, self).__init__()
         self.resnet = resnet18(pretrained=True)
         self.resnet.fc = Linear(512, 36, bias=True)  # 更改全连接层
-        self.resnet.fc.add_module('softmax', torch.nn.Softmax())
+        # self.resnet.fc.add_module('softmax', torch.nn.Softmax())
+        self.softmax = torch.nn.Softmax()
 
         print(self.resnet)  # 打印网络模型
 
@@ -26,13 +27,14 @@ class net_resnet18(Module):
 
     def forward(self, x):
         x = self.resnet(x)
+        x = self.softmax(x)
         return x
 
 
 if __name__ == '__main__':
     img = torch.randn(size=(1, 3, 350, 350))
     print(img.shape)
-    net = classify_net1()
+    net = net_resnet18()
 
     out = net(img)
     print(f'aaa{out.shape}')
