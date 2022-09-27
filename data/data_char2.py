@@ -19,7 +19,7 @@ class SquarePad:
     def __call__(self, image):
         # image = torchvision.transforms.Pad()
         w, h = image.size
-        max_wh = max(w, h)
+        max_wh = 195  # max(w, h)
 
         left = int((max_wh - w) / 2)
         right = max_wh - w - left
@@ -57,8 +57,18 @@ dataloader_train = DataLoader(datasets_train, 10, shuffle=True)
 dataloader_val = DataLoader(datasets_val, 4, shuffle=True)
 
 if __name__ == '__main__':
-    dataloader_test = DataLoader(datasets_train, batch_size=1, shuffle=True)
-    for imgs, labels in dataloader_test:
+    # datasets = ImageFolder('C:/Users/pc/Desktop/ocr', torchvision.transforms.ToTensor())
+    # dataloader_test = DataLoader(datasets, batch_size=1)
+    # dataloader_test = DataLoader(datasets_train, batch_size=1)
+    max_width = 0
+    max_height = 0
+    for imgs, labels in dataloader_train:
         img1 = imgs[0, :, :, :]
         img1 = torchvision.transforms.ToPILImage()(img1)
         img1.show()
+        if img1.size[0] > max_height:
+            max_height = img1.size[0]
+        if img1.size[1] > max_width:
+            max_width = img1.size[1]
+        pass
+    print(max_width, max_height)

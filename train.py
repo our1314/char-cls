@@ -9,6 +9,7 @@ import argparse
 import os
 import pathlib
 import time
+from datetime import datetime
 
 import PIL
 import torch
@@ -59,7 +60,7 @@ def train(opt):
         net.train()
         total_train_accuracy = 0
         total_train_loss = 0
-        cnt = 0
+
         for imgs, labels in data_char2.dataloader_train:
             imgs = imgs.to(device)
             labels = labels.to(device)
@@ -73,11 +74,11 @@ def train(opt):
             # img2.show()
             # endregion
 
-            cnt += 1
-            if cnt < 30:  # 保存30张训练图像
-                img1 = imgs[0, :, :, :]
-                img1 = torchvision.transforms.ToPILImage()(img1)
-                img1.save(f'{opt.model_save_path}/{time.strftime("%Y.%m.%d_%H.%M.%S")}.png', 'png')
+            if epoch < 2:  # 保存两轮的训练图像
+                for i in range(imgs.shape[0]):
+                    img1 = imgs[i, :, :, :]
+                    img1 = torchvision.transforms.ToPILImage()(img1)
+                    img1.save(f'{opt.model_save_path}/{datetime.now().strftime("%Y.%m.%d_%H.%M.%S.%f")}.png', 'png')
 
             out = net(imgs)
             loss = loss_fn(out, labels)
