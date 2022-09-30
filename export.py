@@ -20,4 +20,11 @@ torch.onnx.export(net,
                   input_names=['input'],
                   output_names=['output'],
                   verbose='True')
+
+import onnx
+
+# Checks 参考 yolov7
+onnx_model = onnx.load(f)  # load onnx model
+onnx.checker.check_model(onnx_model)  # check onnx model
+
 print('export success!')
