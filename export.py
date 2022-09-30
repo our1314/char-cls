@@ -3,7 +3,7 @@ import torch.onnx.utils
 from models.classify_net1 import classify_net1
 from models.net_resnet18 import net_resnet18
 
-path = 'run/train/weights/epoch=75-train_acc=1.0.pth'
+path = 'run/train/weights/epoch=299-train_acc=1.0.pth'
 f = path.replace('.pth', '.onnx')
 
 x = torch.randn(1, 3, 200, 200)
