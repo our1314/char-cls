@@ -8,18 +8,12 @@
 import argparse
 import os
 import pathlib
-import time
 from datetime import datetime
-
-import PIL
 import torch
 import torchvision
-from PIL.Image import Image
 from torch.utils.tensorboard.writer import SummaryWriter
 from torch import nn
-
 from data import data_char2
-from models.classify_net1 import classify_net1
 from models.net_resnet18 import net_resnet18
 
 
