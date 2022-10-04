@@ -24,6 +24,7 @@ def train(opt):
     epoch_count = 300
     net = net_resnet18()  # classify_net1()
     net.to(device)
+    # 损失函数、优化器
     loss_fn = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(net.parameters(), lr=0.1)
     # optimizer = torch.optim.Adam(net.parameters(), lr=0.01)
